@@ -1,0 +1,103 @@
+{
+  "training data":{
+
+      "metadata":{
+         "listener_name":"listener",
+         "source_type":"listener",
+         "type":"dbconnection",
+         "database_type":"oracle",
+         "timestamp_format":"yyyy-MM-dd",
+         "hostname":"itrac1312.cern.ch",
+         "type_prefix":"logs",
+         "producer":"oracle",
+         "json":"true",
+         "topic":"oracle_logs",
+         "flume_agent_version":"0.1.6-7.el6",
+         "oracle_sid":"INT8R_RAC13",
+         "timestamp":1498034136989
+      },
+      "data":{
+         "client_program":"",
+         "listener_name":"listener",
+         "CONNECT_DATA_COMMAND":"status",
+         "CONNECT_DATA_VERSION":202375424,
+         "source_type":"listener",
+         "event_timestamp":"2017-06-21T10:35:24+0200",
+         "type":"status",
+         "database_type":"oracle",
+         "CONNECT_DATA_SERVICE":"LISTENER",
+         "client_user":"oracle",
+         "CONNECT_DATA_ARGUMENTS":64,
+         "text":"21-JUN-2017 10:35:24 * (CONNECT_DATA=(CID=(PROGRAM=)(HOST=itrac1312.cern.ch)(USER=oracle))(COMMAND=status)(ARGUMENTS=64)(SERVICE=LISTENER)(VERSION=202375424)) * status * 0",
+         "client_host":"itrac1312.cern.ch",
+         "flume_agent_version":"0.1.6-7.el6",
+         "return_code":0,
+         "oracle_sid":"INT8R_RAC13"
+      }
+   }   {
+      "metadata":{
+         "listener_name":"listener",
+         "source_type":"listener",
+         "type":"dbconnection",
+         "database_type":"oracle",
+         "timestamp_format":"yyyy-MM-dd",
+         "hostname":"itrac1317.cern.ch",
+         "type_prefix":"logs",
+         "producer":"oracle",
+         "json":"true",
+         "topic":"oracle_logs",
+         "flume_agent_version":"0.1.6-7.el6",
+         "oracle_sid":"DEVDB12_RAC13",
+         "timestamp":1498034136989
+      },
+      "data":{
+         "client_program":"python",
+         "listener_name":"listener",
+         "service_name":"devdb11_s.cern.ch",
+         "source_type":"listener",
+         "event_timestamp":"2017-06-21T10:35:28+0200",
+         "type":"establish",
+         "database_type":"oracle",
+         "client_port":34248,
+         "CONNECT_DATA_SERVICE_NAME":"devdb11_s.cern.ch",
+         "CONNECT_DATA_INSTANCE_NAME":"DEVDB112",
+         "client_protocol":"tcp",
+         "CONNECT_DATA_SERVER":"dedicated",
+         "client_user":"_crabserver",
+         "client_ip":"128.142.147.131",
+         "text":"21-JUN-2017 10:35:28 * (CONNECT_DATA=(SERVICE_NAME=devdb11_s.cern.ch)(CID=(PROGRAM=python)(HOST=vocms0117.cern.ch)(USER=_crabserver))(SERVER=dedicated)(INSTANCE_NAME=DEVDB112)) * (ADDRESS=(PROTOCOL=tcp)(HOST=128.142.147.131)(PORT=34248)) * establish * devdb11_s.cern.ch * 0",
+         "client_host":"vocms0117.cern.ch",
+         "flume_agent_version":"0.1.6-7.el6",
+         "return_code":0,
+         "oracle_sid":"DEVDB12_RAC13"
+      }
+   }   {
+      "metadata":{
+         "listener_name":"listener",
+         "source_type":"listener",
+         "type":"dbconnection",
+         "database_type":"oracle",
+         "timestamp_format":"yyyy-MM-dd",
+         "hostname":"itrac1327.cern.ch",
+         "type_prefix":"logs",
+         "producer":"oracle",
+         "json":"true",
+         "topic":"oracle_logs",
+         "flume_agent_version":"0.1.6-7.el6",
+         "oracle_sid":"CASTRINT_RAC13",
+         "timestamp":1498034136989
+      },
+      "data":{
+         "database_type":"oracle",
+         "listener_name":"listener",
+         "service_name":"C2CSTDEV1",
+         "source_type":"listener",
+         "text":"21-JUN-2017 10:35:27 * service_update * C2CSTDEV1 * 0",
+         "event_timestamp":"2017-06-21T10:35:27+0200",
+         "type":"service_update",
+         "flume_agent_version":"0.1.6-7.el6",
+         "return_code":0,
+         "oracle_sid":"CASTRINT_RAC13"
+      }
+   }
+}
