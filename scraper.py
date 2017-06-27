@@ -1,79 +1,126 @@
 #!/usr/bin/env/python
-import json, math
+import json, math, sys, datetime
 
-def getDistance(item, new_item):
+def getDistance(item, newData):
 	distance = 0.0
+	print("\nFinding distance")
+	print newData
+	print item
 	# compare features originally present in the training set
-	for feature in xrange(len(item)):
+	for feature in range(len(max(item, newData, key=len))):
 		# keep first feature as day_of_the_week 
 		# and second as hour_of_the_day to calculate weight
+		# assume these are always present in newData
 		if feature <= 1:
-			distance += pow((float(item[feature]) - float(new_item[feature])), 2)
+			distance += pow((float(item[feature]) - float(newData[feature])), 2)
 		else:
-			if feature 
-			if new_item[feature] == item[feature]:
+			# if both have different lengths thus different features 
+			if len(item) != len(newData):
+				distance += 1.0
+			# if both have the same value for a feature
+			elif newData[feature] == item[feature]:
 				pass
+			# both are the same length but different value of features
 			else:
 				distance += 1.0
-	return math.sqrt(distance)
+	finalDistance = math.sqrt(distance)
+	print "Distance : ", finalDistance
+	return finalDistance
 
-def prediction(new_item, distance):
-
-
+def newConnection(items, newItem):
+	for item in items:
+		# match the ip address or the client user 
+		# in case ip is absent
+		if item[2] == newItem[2]:
+			return False
+	return True
 
 
 if __name__ == '__main__':
 	
 	with open(sys.argv[1], 'r') as file:
-		'''
-		# Extract useful features from the dataset
 		i = 0
-		training = []
+
+		# TODO: change list-based stuff to dict
+		data = []
+		anomalies = []
+		distanceVote = []
+
+		# iterate over each logged line
 		for line in file:
-			if i < 1000000
+			newData = []
+			#try:
+			json_data = json.loads(line)
 
-				try:
-					json_data = json.load(line)
-					if json_data['data']['client_user']:
+			if 'data' in json_data:
+				timestamp = str(json_data['data']['event_timestamp'])
+				hour_of_the_day = (float(timestamp[11:13]) + float(timestamp[14:16])/60)
+				# 0 - Monday; 6 - Sunday
+				day_of_the_week = datetime.datetime(int(timestamp[:4]), \
+					int(timestamp[5:7]), int(timestamp[8:10]), int(timestamp[11:13]), \
+					int(timestamp[14:16]), int(timestamp[17:19])).weekday()
+				newData.append(hour_of_the_day)
+				newData.append(day_of_the_week)
+				
+				if 'client_ip' in json_data['data']:
+					#print "\nclient_ip: ", json_data['data']['client_ip']
+					client_ip = str(json_data['data']['client_ip'])
+					newData.append(client_ip)
 
-				except:
-					pass
-				i += 1
+				if 'client_user' in json_data['data']:
+					#print "\nclient_user: ", json_data['data']['client_user']
+					client_user = str(json_data['data']['client_user'])
+					newData.append(client_user)
+				
+				if 'client_host' in json_data['data']:
+					#print "\nclient_host: ", json_data['data']['client_host']
+					client_host = str(json_data['data']['client_host'])
+					newData.append(client_host)
+
+				if 'client_program' in json_data['data']:
+					#print "\nclient_program: ", json_data['data']['client_program']
+					client_program = str(json_data['data']['client_program'])
+					newData.append(client_program)
+
+				if 'service_name' in json_data['data']:
+					#print "\nservice_name: ", json_data['data']['service_name']
+					service_name = str(json_data['data']['service_name'])
+					newData.append(service_name)
+			
+			# print "\nNew Data :", newData
+			
+			# ignore cases where data is incomplete
+			if len(newData) <= 2:
+				continue
+
+			# for a new connection, blindly trust it
+			if newConnection(data, newData):
+				print "\nNew item found"
+			
+			# voting for distance to all previously stored nodes	
+			for item in data:
+				distanceVote.append(getDistance(item, newData))
+			# print "\nDistance Vote: ", distanceVote
+			distanceVote.sort()
+
+			if len(distanceVote) == 0:
+				print "\nNo votes for closest neighbour"
+				data.append(newData)
+
+			elif distanceVote[0] <= 10.0:
+				# print(distanceVote)
+				print "\nMinimum distance: ", distanceVote[0]
+				data.append(newData)
+
+			elif distanceVote[0] > 10.0:
+				print "\nAnomalous connection at: ", newData
+				anomalies.append(newData)
 			else:
-		'''
-		i = 0
-		data = {}
-		newdata = []
-		for line in file:
-			try:
-				json_data = json.load(line)
-				if json_data:
-					if json_data['data']['event_timestamp']:
-						timestamp = json_data['data']['event_timestamp']
-						hour_of_the_day = int(timestamp[11:13])
-						# 0 - Monday; 6 - Sunday
-						day_of_the_week = datetime.datetime(int(timestamp[:4]), \
-							int(timestamp[5:7]), int(timestamp[8:10]), hour_of_the_day, \
-							int(timestamp[14:16]), int(timestamp[17:19])).weekday()
-					newdata.extend(hour_of_the_day, day_of_the_week)
-					if json_data['data']['client_ip']:	
-						client_ip = json_data['data']['client_ip']
-						newdata.extend(client_ip)
-					if json_data['data']['client_user']:
-						client_user = json_data['data']['client_user']
-						newdata.extend(client_user)
-					if json_data['data']['client_program']:
-						client_program = json_data['data']['client_program']
-						newdata.extend(client_program)
-					if json_data['data']['client_host']:
-						client_host = json_data['data']['client_host']
-						newdata.extend(client_host)
-					if json_data['data']['service_name']:	
-						service_name = json_data['data']['service_name']
-						newdata.extend(service_name)
-					if i == 1:
-						data.append(newdata)
-			except:
-				print "Error at line : ", i
-			i += 1
+				print "\nError"
+				data.append(newData)
 
+			#except:
+			#	print "\nError at line : ", i
+			
+			i += 1
+		print "\nAnomalies: ", anomalies
