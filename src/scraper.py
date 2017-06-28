@@ -4,8 +4,8 @@ import json, math, sys, datetime
 def getDistance(item, newItem):
 	distance = 0.0
 	print("\nFinding distance")
-	print newItem
-	print item
+	# print newItem
+	# print item
 	# compare features originally present in the training set
 
 	# keep first feature as day_of_the_week 
@@ -36,26 +36,25 @@ def getDistance(item, newItem):
 			and distance <= 2.0:
 				distance += 30.0
 
-	finalDistance = math.sqrt(distance)
-	print "Distance : ", finalDistance
-	return finalDistance
+	# finalDistance = math.sqrt(distance)
+	# print "Distance : ", finalDistance
+	return math.sqrt(distance)
 
 def newConnection(items, newItem):
 	for item in items:
 		# match the ip address or the client user 
 		# in case ip is absent
-		if "client_user" in items[item]:
-			if "client_user" in newItem:
+		if "client_user" in items[item] and "client_user" in newItem:
 				if items[item]["client_user"] == newItem["client_user"]:
 					return False
-		elif "client_ip" in items[item]:
-			if "client_ip" in newItem:
+		'''
+		elif "client_ip" in items[item] and "client_ip" in newItem:
 				if items[item]["client_ip"] == newItem["client_ip"]:
 					return False
-		elif "client_host" in items[item]:
-			if "client_host" in newItem:
+		elif "client_host" in items[item] and "client_host" in newItem:
 				if items[item]["client_host"] == newItem["client_host"]:
 					return False
+		'''
 	return True
 
 
@@ -77,7 +76,9 @@ if __name__ == '__main__':
 
 			if 'data' in json_data:
 				timestamp = str(json_data['data']['event_timestamp'])
-				hour_of_the_day = (float(timestamp[11:13]) + float(timestamp[14:16])/60)
+				hour_of_the_day = (float(timestamp[11:13]) + \
+					float(timestamp[14:16])/60 + \
+					float(timestamp[17:19])/3600)
 				# 0 - Monday; 6 - Sunday
 				day_of_the_week = datetime.datetime(int(timestamp[:4]), \
 					int(timestamp[5:7]), int(timestamp[8:10]), int(timestamp[11:13]), \
@@ -87,28 +88,26 @@ if __name__ == '__main__':
 				
 				if 'client_ip' in json_data['data']:
 					#print "\nclient_ip: ", json_data['data']['client_ip']
-					client_ip = str(json_data['data']['client_ip'])
-					newItem["client_ip"] = client_ip
+					newItem["client_ip"] = str(json_data['data']['client_ip'])
 
 				if 'client_user' in json_data['data']:
 					#print "\nclient_user: ", json_data['data']['client_user']
-					client_user = str(json_data['data']['client_user'])
-					newItem["client_user"] = client_user
+					newItem["client_user"] = str(json_data['data']['client_user'])
+					
 				
 				if 'client_host' in json_data['data']:
 					#print "\nclient_host: ", json_data['data']['client_host']
-					client_host = str(json_data['data']['client_host'])
-					newItem["client_host"] = client_host
-
+					newItem["client_host"] = str(json_data['data']['client_host'])
+					
 				if 'client_program' in json_data['data']:
 					#print "\nclient_program: ", json_data['data']['client_program']
-					client_program = str(json_data['data']['client_program'])
-					newItem["client_program"] = client_program
+					newItem["client_program"] = str(json_data['data']['client_program'])
+					
 
 				if 'service_name' in json_data['data']:
 					#print "\nservice_name: ", json_data['data']['service_name']
-					service_name = str(json_data['data']['service_name'])
-					newItem["service_name"] = service_name
+					newItem["service_name"] = str(json_data['data']['service_name'])
+					
 			
 			# print "\nNew Data :", newItem
 			
@@ -125,7 +124,8 @@ if __name__ == '__main__':
 				distance = getDistance(data[item], newItem)
 				distanceVote.append(distance)
 				if distance == 0.0:
-					print "*" * 20
+					print "\n"
+					print "*" * 40
 			# print "\nDistance Vote: ", distanceVote
 			distanceVote.sort()
 
