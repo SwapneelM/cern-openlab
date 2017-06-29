@@ -25,7 +25,7 @@ def extract(filename):
 
 	with open(filename, 'r') as file:
 		i = 0
-
+		j = 0
 		# TODO: change list-based stuff to dict
 		data = {}
 
@@ -37,6 +37,7 @@ def extract(filename):
 			except:
 				print "\nLine {0} is not in JSON format".format(i)
 				i += 1
+				j += 1
 				continue
 
 			if 'data' in jsonData:
@@ -104,3 +105,4 @@ if __name__ == '__main__':
 	data = extract(sys.argv[1])
 	writeToFile(sys.argv[2], data)
 	print "Data stored in file"
+	print "Could not store {0} lines due to invalid format".format(j)
