@@ -86,6 +86,8 @@ def extract(filename):
 
 			# increment item number within the data
 			i += 1
+	if j > 0:
+		print "Could not store {0} lines due to invalid format".format(j)
 	return data
 
 def writeToFile(filename, data):
@@ -105,4 +107,3 @@ if __name__ == '__main__':
 	data = extract(sys.argv[1])
 	writeToFile(sys.argv[2], data)
 	print "Data stored in file"
-	print "Could not store {0} lines due to invalid format".format(j)
