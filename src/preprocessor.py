@@ -1,4 +1,4 @@
-#!/usr/bin/env/python
+#!/usr/bin/env python
 '''
 arguments : [path_to_extracted_csv][numeric_csv_storage_filename]
 '''
