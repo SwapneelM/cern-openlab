@@ -36,6 +36,7 @@ if __name__ == '__main__':
 		try:
 			sourceReader = csv.DictReader(sourceFile)
 			destWriter = csv.DictWriter(destFile, fieldnames=fieldNames)
+			destWriter.writeheader()
 		except:
 			print "Failed to write to file"
 		
@@ -88,19 +89,21 @@ if __name__ == '__main__':
 			if line['service_name'] == '':
 				pass
 			elif line['service_name'] in serviceNameDict:
-				service_name = serviceNameDict[line['client_user']]
+				service_name = serviceNameDict[line['service_name']]
 			else:	
-				serviceNameDict[line['client_user']] = serviceVal
+				serviceNameDict[line['service_name']] = serviceVal
 				serviceVal += 1
 
-			# write the finally created row to the file
-			destWriter.writerow({'hour_of_the_day' : line['hour_of_the_day'], \
+			newRow = {'hour_of_the_day' : line['hour_of_the_day'], \
 				'day_of_the_week' : line['day_of_the_week'], \
 				'client_user' : client_user, \
 				'client_host' : client_host, \
 				'client_ip' : client_ip, \
 				'client_program' : client_program, \
-				'service_name' : service_name})
+				'service_name' : service_name}
+			print newRow
+			# write the newly created row to the file
+			destWriter.writerow(newRow)
 			i += 1
 
 	print "client_users : ", len(clientUserDict)
