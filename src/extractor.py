@@ -32,8 +32,11 @@ def extract(filename):
 		# iterate over each logged line
 		for line in file:
 			newItem = {}
-			#try:
-			jsonData = json.loads(line)
+			try:
+				jsonData = json.loads(line)
+			except:
+				print "\nLine is not in JSON format"
+				continue
 
 			if 'data' in jsonData:
 				timestamp = str(jsonData['data']['event_timestamp'])
