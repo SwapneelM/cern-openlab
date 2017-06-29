@@ -35,7 +35,7 @@ def extract(filename):
 			try:
 				jsonData = json.loads(line)
 			except:
-				print "\nLine is not in JSON format"
+				print "\nLine {0} is not in JSON format".format(i)
 				continue
 
 			if 'data' in jsonData:
