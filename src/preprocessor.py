@@ -23,11 +23,11 @@ if __name__ == '__main__':
 	serviceNameDict = {}
 
 	# assign a numeric value to each feature 
-	userVal = 0
-	hostVal = 0
-	ipVal = 0
-	programVal = 0
-	serviceVal = 0
+	userVal = 1
+	hostVal = 1
+	ipVal = 1
+	programVal = 1
+	serviceVal = 1
 	# open the source file with the extracted json attributes
 	with open(sys.argv[1], 'r') as sourceFile, open(sys.argv[2], 'w') as destFile:
 		# open the destination file for the numeric data to be stored
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 				'client_ip' : client_ip, \
 				'client_program' : client_program, \
 				'service_name' : service_name}
-			print newRow
+			#print newRow
 			# write the newly created row to the file
 			destWriter.writerow(newRow)
 			i += 1
