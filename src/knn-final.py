@@ -2,7 +2,7 @@
 '''
 arguments : [path_to_stored_json]
 '''
-import json, csv, sys, datetime
+import json, csv, sys, datetime, pandas
 
 def extract(filename):
 
@@ -85,7 +85,7 @@ def writeToFile(filename, data):
 			writer.writerow(data[item])
 	pass
 
-def preprocess(sourceFile):
+def preprocess(sourceFile, destFile):
 	# initialize each dictionary which will store values \
 	# of the values of features already seen before
 	clientUserDict = {}
@@ -100,8 +100,9 @@ def preprocess(sourceFile):
 	ipVal = 1
 	programVal = 1
 	serviceVal = 1
+
 	# open the source file with the extracted json attributes
-	with open(sourceFile, 'r') as sourceFile, open('../dataset/preprocessed.csv', 'w') as destFile:
+	with open(sourceFile, 'r') as sourceFile, open(destFile, 'w') as destFile:
 		# open the destination file for the numeric data to be stored
 		i = 0
 		fieldNames = ['hour_of_the_day', 'day_of_the_week', 'client_user', 'client_host', 'client_ip', 'client_program', 'service_name']
@@ -185,11 +186,45 @@ def preprocess(sourceFile):
 	print "service_names : ", len(serviceNameDict)
 	pass
 
+def knn(sourceFile):
+	# read the csv data
+	dataFrame = pandas.read_csv(sourceFile, delimiter=',').fillna(value=0.0)
+	#print dataFrame
+	columns = list(dataFrame)
+	anomalies = {}
+	# iterate over the entire data
+	for i in xrange(len(dataFrame)-1):
+		df = dataFrame[i:i+1]
+
+		tmp_df = abs(dataFrame - df.iloc[0])
+		tmp_df = tmp_df.drop(dataFrame.index[i])
+		min_weight = tmp_df.sum(axis=1).min()
+
+		# detect anomalies
+		if min_weight >= 15.0:
+			print "Anomaly found at index ", i
+			anomalies[i] = min_weight
+
+	return anomalies
+
 if __name__ == '__main__':
 	
 	data = extract(sys.argv[1])
 	filename = '../dataset/extracted.csv'
 	writeToFile(filename, data)
 	print "Data stored in file"
-	preprocess(filename)
-	
+	destFile = '../dataset/preprocessed.csv'
+	preprocess(filename, destFile)
+	anomalies = knn(destFile)
+
+	with open(filename, 'r') as sourceFile:
+		try:
+			sourceReader = csv.DictReader(sourceFile)
+			i = 0
+			for line in sourceReader:
+				if i in anomalies:
+					print "\nDetails :\n", line
+				i += 1
+		except:
+			print "Error reading anomaly details from file"
+		
