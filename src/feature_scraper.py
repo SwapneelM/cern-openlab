@@ -41,7 +41,7 @@ def extract(filename):
 						newItem[feature] = ""
 
 			if 'metadata' in jsonData:
-				featuresFromMetadata = ["oracle_sid", "hostname", "type"]
+				featuresFromMetadata = ["oracle_sid", "hostname"]
 				for feature in featuresFromMetadata:
 					if feature in jsonData['metadata']:
 						newItem[feature] = str(jsonData['metadata'][feature])
