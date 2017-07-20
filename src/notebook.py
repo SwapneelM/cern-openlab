@@ -4,7 +4,6 @@ import json, csv
 from sklearn.feature_extraction import DictVectorizer
 from sklearn import preprocessing
 import numpy as np
-from sklearn import cluster, datasets
 
 """
 argument [path_to_csv]
@@ -28,6 +27,6 @@ if __name__ == '__main__':
 
 	for i in X_scaled:
 		print i 
-	
+
 	kmeans(X_scaled)
 	# ocsvm(X_scaled)
