@@ -6,7 +6,7 @@
 
 * The functions and method have been documented but you can refer to my talk to understand more about the work : https://indico.cern.ch/event/635481/contributions/2685048/
 
-* The data slices have been provided (critical details obscured/modified) for this purpose, however the author and CERN Openlab retain the rights to all intellectual property resulting directly or indirectly from the use of this data
+* The provided data slices have now been redacted for security purposes; however obscured data can be provided if you would like to test the code. Simply send your requirements via email to : swapneel.mehta@djsce.edu.in
 
 
 ## Structure
