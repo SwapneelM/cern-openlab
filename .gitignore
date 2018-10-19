@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# user-defined files
+res/
+dataset/
 # C extensions
 *.so
 
